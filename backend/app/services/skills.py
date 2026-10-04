@@ -7,7 +7,7 @@ SKILLS=sorted(set(ALIASES.values())|{"python","java","c++","sql","html","css","f
 
 def normalize(text:str)->str:
     t=text.lower()
-    for alias,canonical in sorted(ALIASES.items(),key=lambda x:-len(x[0])): t=re.sub(r"(?<!\\w)"+re.escape(alias)+r"(?!\\w)",canonical,t)
+    for alias,canonical in sorted(ALIASES.items(),key=lambda x:-len(x[0])): t=re.sub(r"(?<!\w)"+re.escape(alias)+r"(?!\w)",canonical,t)
     return t
 
 def extract_skills(text:str)->set[str]:
