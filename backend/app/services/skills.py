@@ -11,4 +11,4 @@ def normalize(text:str)->str:
     return t
 
 def extract_skills(text:str)->set[str]:
-    t=normalize(text); return {s for s in SKILLS if re.search(r"(?<!\\w)"+re.escape(s)+r"(?!\\w)",t)}
+    t=normalize(text); return {s for s in SKILLS if re.search(r"(?<!\w)"+re.escape(s)+r"(?!\w)",t)}
