@@ -1,7 +1,16 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 app = FastAPI(title="CareerFlow AI API", version="0.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class AnalyzeRequest(BaseModel):
     resume_text: str = Field(min_length=20)
@@ -21,8 +30,8 @@ SKILL_KEYWORDS = [
 ]
 
 def extract_skills(text: str) -> set[str]:
-    text = text.lower()
-    return {skill for skill in SKILL_KEYWORDS if skill in text}
+    normalized = text.lower()
+    return {skill for skill in SKILL_KEYWORDS if skill in normalized}
 
 def analyze(resume_text: str, job_description: str) -> AnalyzeResponse:
     resume = extract_skills(resume_text)
