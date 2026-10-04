@@ -7,6 +7,10 @@ type Result = {
   matched_skills: string[];
   missing_skills: string[];
   suggestions: string[];
+  preferred_matches: string[];
+  ats_score: number;
+  ats_warnings: string[];
+  interview_questions: string[];
 };
 
 export default function Home() {
@@ -23,7 +27,7 @@ export default function Home() {
     setResult(null);
     try {
       const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const response = await fetch(baseUrl + "/api/analyze", {
+      const response = await fetch(baseUrl + "/api/v1/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ resume_text: resume, job_description: job }),
@@ -75,7 +79,7 @@ export default function Home() {
             <p><strong>Match score:</strong> {result.match_score}%</p>
             <p><strong>Matched:</strong> {result.matched_skills.join(", ") || "None"}</p>
             <p><strong>Missing:</strong> {result.missing_skills.join(", ") || "None"}</p>
-            <h3>Suggestions</h3>
+            <p><strong>ATS score:</strong> {result.ats_score}%</p>\n            <p><strong>Preferred matches:</strong> {result.preferred_matches.join(", ") || "None"}</p>\n            {result.ats_warnings.length > 0 && <><h3>ATS warnings</h3><ul>{result.ats_warnings.map((item) => <li key={item}>{item}</li>)}</ul></>}\n            <h3>Suggestions</h3>
             <ul>{result.suggestions.map((item) => <li key={item}>{item}</li>)}</ul>
           </section>
         )}
